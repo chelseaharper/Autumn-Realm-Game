@@ -1,25 +1,10 @@
 from operator import itemgetter
 from tkinter import messagebox
+import sys
 import characterbuilder
 import itemoptions
 
-def attack(attacker, defender):
-    print("The " + attacker.gettype() + " attacks!")
-    attroll = attacker.weapon.swing(attacker)
-    opposedAC = defender.getAC(attacker.weapon.type)
-    if attroll - attacker.melee == 20:
-        print("It's a crit!")
-        damage = attacker.weapon.damage(attacker) + attacker.weapon.damage(attacker)
-        defender.changehealth(-damage)
-        print("The " + defender.gettype() + " takes " + str(damage) + " damage. The " + defender.gettype() + "'s HP is " + str(defender.getHP()) + ".\n")
-    elif attroll >= opposedAC:
-        print("The attack hits!")
-        damage = attacker.weapon.damage(attacker)
-        defender.changehealth(-damage)
-        print("The " + defender.gettype() + " takes " + str(damage) + " damage. The " + defender.gettype() + "'s HP is " + str(defender.getHP()) + ".\n")
-    else:
-        print("The attack misses!\n")
-
+#Character Creation Functions: these functions are used for creating, displaying, and updating player characters in the game.
 def statsokay(prio):
     charstats = characterbuilder.buildstatblock(prio)
     print("Your player stats are: " + str(charstats))
@@ -54,7 +39,36 @@ def charcreator():
     charname = input("What would you like to name your character? ")
     return characterbuilder.Player(charname, playerclass, playerstats, hdie, armor, 1, weapon)
 
+def levelup(player):
+    print("You have gained a level!")
+    player.raiselevel()
+    displayplayer(player)
+
+def displayplayer(player):
+    print("------------------------------")
+    print("Name: " + player.gettype() + "\tlevel " + str(player.level) + " " + player.type)
+    print("HP: " + str(player.getHP("current")) + "/" + str(player.getHP("max")) + "\nAC: " + str(player.getAC("physical")) + "\nTouch AC: " + str(player.getAC("magical")))
+
+#Combat Functions: these functions are used for managing combat encounters between the player and other characters in the game.
+def attack(attacker, defender):
+    print("The " + attacker.gettype() + " attacks!")
+    attroll = attacker.weapon.swing(attacker)
+    opposedAC = defender.getAC(attacker.weapon.type)
+    if attroll - attacker.melee == 20:
+        print("It's a crit!")
+        damage = attacker.weapon.damage(attacker) + attacker.weapon.damage(attacker)
+        defender.changehealth(-damage)
+        print("The " + defender.gettype() + " takes " + str(damage) + " damage. The " + defender.gettype() + "'s HP is " + str(defender.getHP("current")) + ".\n")
+    elif attroll >= opposedAC:
+        print("The attack hits!")
+        damage = attacker.weapon.damage(attacker)
+        defender.changehealth(-damage)
+        print("The " + defender.gettype() + " takes " + str(damage) + " damage. The " + defender.gettype() + "'s HP is " + str(defender.getHP("current")) + ".\n")
+    else:
+        print("The attack misses!\n")
+
 def combat(combatants):
+    XPearned = 0
     order = []
     for i in combatants:
         i.rollinit()
@@ -83,10 +97,13 @@ def combat(combatants):
                     fight = False
                     break
                 if nextchar[1].health <= 0:
+                    print("The " + nextchar[1].gettype() + " dies!")
+                    XPearned += nextchar[1].XP
                     order.remove(nextchar)
                 if len(order) <= 1:
                     fight = False
-                    print("You won the fight!")
+                    print("You won the fight! You gain " + str(XPearned) + " experience points!")
+                    i[1].currXP += XPearned
                     break
             elif type(i[1]) == characterbuilder.Monster:
                 hasswung = False
@@ -97,28 +114,37 @@ def combat(combatants):
                         if nextchar[1].health <= 0:
                             print("You have died.")
                             order.remove(nextchar)
-                            fight = False
-                            break
+                            input("Thanks for playing Autumn's Realm! Hit any key to exit.")
+                            sys.exit()
                         if len(order) <= 1:
                             fight = False
                             break
                     else:
                         nextchar = order[(order.index(nextchar) + 1) % len(order)]
-    
 
-playgame = input("Would you like to play Autumn's Realm? (y/n) ")
-if playgame == "y" or "Y":
-    print("Let's create a character.")
-    player = charcreator()
-    print("------------------------------")
-    print("Name: " + player.gettype() + "\tlevel " + str(player.level) + " " + player.type)
-    print("HP: " + str(player.getHP()) + "\nAC: " + str(player.getAC("physical")) + "\nTouch AC: " + str(player.getAC("magical")))
-    input("Press any key to begin.")
-    monsterstats = characterbuilder.buildstatblock("melee")
-    monster1 = characterbuilder.Monster("Goblin", monsterstats, 8, itemoptions.leather, 1, itemoptions.sword)
-    monster2 = characterbuilder.Monster("Orc", monsterstats, 8, itemoptions.chain, 1, itemoptions.sword)
-    fighters = [player, monster1, monster2]
-    combat(fighters)
+#Non-Combat Functions: these functions are used for managing encounters between the player and other characters in the game which do not
+# involve combat. The non-combat encounter may result in combat depending on the result, but that would call a combat function.
+def negotiate(player, target):
+    pass
+#Main functionality of the game
+def main():
+    playgame = input("Would you like to play Autumn's Realm? (y/n) ")
+    if playgame == "y" or "Y":
+        print("Let's create a character.")
+        player = charcreator()
+        displayplayer(player)
+        input("Press any key to begin.")
+        monsterstats = characterbuilder.buildstatblock("melee")
+        monster1 = characterbuilder.Monster("Goblin", monsterstats, 8, itemoptions.leather, 1, itemoptions.sword, 200)
+        monster2 = characterbuilder.Monster("Orc", monsterstats, 8, itemoptions.chain, 1, itemoptions.sword, 300)
+        fighters = [player, monster1, monster2]
+        combat(fighters)
+        if player.currXP == player.needXP:
+            levelup(player)
+        input("Thanks for playing Autumn's Realm! Hit any key to exit.")
 
-else:
-    input("Thanks for playing Autumn's Realm! Hit any key to exit.")
+    else:
+        input("Thanks for playing Autumn's Realm! Hit any key to exit.")
+
+if __name__ == "__main__":
+    main()
