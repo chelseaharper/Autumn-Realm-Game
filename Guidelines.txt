@@ -1,0 +1,27 @@
+GOAL
+
+The goal for this program is to create a text-based version of an old game concept called Autumn's Realm,
+using text descriptions but using buttons for player interaction. The game should begin with the player
+choosing the type of character they would like to play, rolling random statistic scores, and applying those
+scores to attributes for their character, and then being told an introduction around having arrived in a town
+seeking help with some lost villagers. The game will proceed through identifying what happened to the villagers,
+deciding what to do about the missing villagers, and doing things to resolve the issues. The game needs combat
+mechanics and combats the player should face, but also some level of player agency in determining what actions
+to take in resolving the story.
+
+MECHANICS NEEDED
+Attack mechanics: Player should be able to attack monsters and monsters should be able to attack them. A roll
+needs to be made to determine how well the attack is executed.
+
+Defense mechanics: Player should have a defense score of some form which an attack must overcome in order to
+receive damage and vice versa with monsters.
+
+Heal mechanics: Players and possibly some monsters should have mechanics for restoring hit points.
+
+Stat increase mechanics: Players should receive stat increases at appropriate time which change their ability
+to succeed at attacks.
+
+Negotiate mechanics: Players should have a way to negotiate with game characters and/or monsters to try and
+convince characters/monsters to act in ways that benefit the player.
+
+Save mechanics: Players should be able to save their game and reload their game at a later time to play further.
