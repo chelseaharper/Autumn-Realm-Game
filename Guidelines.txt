@@ -25,9 +25,9 @@ Inventory mechanics: Player should have an inventory of items they are carrying 
 and use those items when appropriate.
 
 Stat increase mechanics: Players should receive stat increases at appropriate time which change their ability
-to succeed at attacks.
+to succeed at attacks. --IMPLEMENTED
 
 Negotiate mechanics: Players should have a way to negotiate with game characters and/or monsters to try and
-convince characters/monsters to act in ways that benefit the player.
+convince characters/monsters to act in ways that benefit the player. --IMPLEMENTED
 
 Save mechanics: Players should be able to save their game and reload their game at a later time to play further.

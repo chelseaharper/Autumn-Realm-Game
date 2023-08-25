@@ -1,4 +1,5 @@
 from operator import itemgetter
+from random import randint
 from tkinter import messagebox
 import sys
 import characterbuilder
@@ -37,7 +38,7 @@ def charcreator():
         playerclass = "Wizard"
     
     charname = input("What would you like to name your character? ")
-    return characterbuilder.Player(charname, playerclass, playerstats, hdie, armor, 1, weapon)
+    return characterbuilder.Player(charname, playerclass, playerstats, hdie, armor, 1, weapon, [])
 
 def levelup(player):
     print("You have gained a level!")
@@ -114,8 +115,7 @@ def combat(combatants):
                         if nextchar[1].health <= 0:
                             print("You have died.")
                             order.remove(nextchar)
-                            input("Thanks for playing Autumn's Realm! Hit any key to exit.")
-                            sys.exit()
+                            exitgame()
                         if len(order) <= 1:
                             fight = False
                             break
@@ -125,8 +125,31 @@ def combat(combatants):
 #Non-Combat Functions: these functions are used for managing encounters between the player and other characters in the game which do not
 # involve combat. The non-combat encounter may result in combat depending on the result, but that would call a combat function.
 def negotiate(player, target):
-    pass
+    success = False
+    roll = randint(1, 20) + player.getstatmod("cha")
+    result = target.changeattitude(roll)
+    if result[0] == 0:
+        print("The " + target.gettype() + " doesn't seem affected.")
+    elif result[0] > 0:
+        print("The " + target.gettype() + " smiles. It seems you've made a good impression.")
+        success = True
+    elif result[0] < 0:
+        print("The " + target.gettype() + " scowls. You may have made them angry.")
+    return success
+
+def checkinventory(player):
+    print("------------------------------")
+    print("Player Inventory:")
+    for i in player.items:
+        print(i.name)
+    print("------------------------------")
+
+
 #Main functionality of the game
+def exitgame():
+    input("Thanks for playing Autumn's Realm! Hit any key to exit.")
+    sys.exit()
+
 def main():
     playgame = input("Would you like to play Autumn's Realm? (y/n) ")
     if playgame == "y" or "Y":
@@ -134,17 +157,50 @@ def main():
         player = charcreator()
         displayplayer(player)
         input("Press any key to begin.")
+        print("You have been traveling for days, looking for a new place to settle down after leaving your hometown.")
+        print("In the afternoon of the eighth day, you see a town ahead.")
+        playon = True
+        while playon == True:
+            action = int(input("What would you like to do?\n1. Go to the town.\n2. Check Inventory\n3. Nothing (Quit Game)\n"))
+            if action == 1:
+                print("Just as you reach the edge of town, monsters jump out to attack you.")
+                playon = False
+            elif action == 2:
+                checkinventory(player)
+            elif action == 3:
+                exitgame()
+            else:
+                print("Sorry, that's not a valid option.")
         monsterstats = characterbuilder.buildstatblock("melee")
-        monster1 = characterbuilder.Monster("Goblin", monsterstats, 8, itemoptions.leather, 1, itemoptions.sword, 200)
-        monster2 = characterbuilder.Monster("Orc", monsterstats, 8, itemoptions.chain, 1, itemoptions.sword, 300)
-        fighters = [player, monster1, monster2]
+        monster1 = characterbuilder.Monster("Goblin", monsterstats, 8, itemoptions.leather, 1, itemoptions.sword, 200, [])
+        monster2 = characterbuilder.Monster("Orc", monsterstats, 8, itemoptions.chain, 1, itemoptions.sword, 300, [])
+        fighters = [player, monster1]
         combat(fighters)
         if player.currXP == player.needXP:
             levelup(player)
-        input("Thanks for playing Autumn's Realm! Hit any key to exit.")
+        mayor = characterbuilder.NPC("Mayor", characterbuilder.buildstatblock("commoner"), 6, itemoptions.clothes, 1, itemoptions.fists, 20, [], "Friendly")
+        print("As you sag with relief after the battle, a man comes out of the town toward you, looking around fearfully.")
+        print("\'Who are you?\' the man asks. \'What brings you to our town?\'")
+        answer = int(input("What would you like to say?\n1. Just looking for adventure.\n2. I want a new home. (Persuasion Check)\n3. I\'m here to kill you! (Combat)\n"))
+        if answer == 1:
+            print("The man shakes his head. \'No adventure here, I\'m afraid,\' he says. \'Better move on.\'")
+            print("With a sigh, you turn away and look for a place to make camp.")
+        elif answer == 2:
+            influence = negotiate(player, mayor)
+            if influence:
+                print("\'Well, you're welcome to stay here! Come on in.\' He gestures for you to follow him inside the town.")
+                print("Life in the town is idyllic, and after a few days, you decide to stay forever.")
+            else:
+                print("Sorry, we have no room in our town for random adventurers. Best of luck to you!")
+                print("Disappointed, you turn away and look for a place to make camp for the night. Maybe you'll have better luck elsewhere.")
+        elif answer == 3:
+            fighters = [player, mayor]
+            combat(fighters)
+            print("After killing the man, you realize he was the mayor of the town and are immediately driven off by the other citizens.")        
+        exitgame()
 
     else:
-        input("Thanks for playing Autumn's Realm! Hit any key to exit.")
+        exitgame()
 
 if __name__ == "__main__":
     main()

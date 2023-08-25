@@ -2,7 +2,7 @@ from random import randint
 import itemoptions
 
 class Creature:
-    def __init__(self, type, stats, hitdie, armor, level, weapon):
+    def __init__(self, type, stats, hitdie, armor, level, weapon, items):
         self.type = type
         self.stats = stats
         self.armor = armor
@@ -17,6 +17,8 @@ class Creature:
         self.hitdie = hitdie
         self.weapon = weapon
         self.init = 0
+        self.items = items
+        self.updateitems([armor, weapon])
         self.sethealth()
         self.setAC()
     
@@ -29,6 +31,9 @@ class Creature:
         else:
             self.health += healthchange
     
+    def updateitems(self, additions):
+        self.items += additions
+
     def setAC(self):
         self.AC = self.armor.setAC(self)
     
@@ -53,10 +58,13 @@ class Creature:
     
     def gettype(self):
         return self.type
+    
+    def getitems(self):
+        return self.items
 
 class Player(Creature):
-    def __init__(self, name, type, stats, hitdie, armor, level, weapon):
-        super().__init__(type, stats, hitdie, armor, level, weapon)
+    def __init__(self, name, type, stats, hitdie, armor, level, weapon, items):
+        super().__init__(type, stats, hitdie, armor, level, weapon, items)
         self.name = name
         self.currXP = 0
         self.needXP = 0
@@ -90,43 +98,39 @@ class Player(Creature):
         return HP
 
 class Monster(Creature):
-    def __init__(self, type, stats, hitdie, armor, level, weapon, XP):
-        super().__init__(type, stats, hitdie, armor, level, weapon)
+    def __init__(self, type, stats, hitdie, armor, level, weapon, XP, items):
+        super().__init__(type, stats, hitdie, armor, level, weapon, items)
         self.XP = XP
     
     def sethealth(self):
         self.health = (getaverage(self.hitdie) + self.getstatmod("con")) * self.level
 
 class NPC(Monster):
-    def __init__(self, type, stats, hitdie, armor, level, weapon, XP, attitude):
-        super().__init__(type, stats, hitdie, armor, level, weapon, XP)
+    def __init__(self, type, stats, hitdie, armor, level, weapon, XP, items, attitude):
+        super().__init__(type, stats, hitdie, armor, level, weapon, XP, items)
         self.attitudeoptions = ["Helpful", "Friendly", "Indifferent", "Unfriendly", "Hostile"]
         self.attitude = attitude
     
     def getDC(self):
         if self.attitude == "Hostile":
-            DC = 25 + self.getstatmod("cha")
+            DC = 12 + self.getstatmod("cha")
         elif self.attitude == "Unfriendly":
-            DC = 20 + self.getstatmod("cha")
-        elif self.attitude == "Indifferent":
-            DC = 15 + self.getstatmod("cha")
-        elif self.attitude == "Friendly":
             DC = 10 + self.getstatmod("cha")
+        elif self.attitude == "Indifferent":
+            DC = 7 + self.getstatmod("cha")
+        elif self.attitude == "Friendly":
+            DC = 5 + self.getstatmod("cha")
         elif self.attitude == "Helpful":
             DC = 0 + self.getstatmod("cha")
         return DC
     
-    def getnextattitude(self, direction, amount):
-        if direction == "improved":
-            if (self.attitudeoptions.index(self.attitude) - amount) < 0:
-                self.attitude = self.attitudeoptions[0]
-            else:
-                self.attitude = self.attitudeoptions[(self.attitudeoptions.index(self.attitude) - amount)]
-        elif direction == "reduced":
-            if (self.attitudeoptions.index(self.attitude) + amount) > len(self.attitudeoptions):
-                self.attitude = self.attitudeoptions[(len(self.attitudeoptions) - 1)]
-            else:
-                self.attitude = self.attitudeoptions[(self.attitudeoptions.index(self.attitude) + amount)]
+    def getnextattitude(self, amount):
+        if (self.attitudeoptions.index(self.attitude) - amount) < 0:
+            self.attitude = self.attitudeoptions[0]
+        elif (self.attitudeoptions.index(self.attitude) - amount) > len(self.attitudeoptions):
+            self.attitude = self.attitudeoptions[(len(self.attitudeoptions) - 1)]
+        else:
+            self.attitude = self.attitudeoptions[(self.attitudeoptions.index(self.attitude) - amount)]
 
     def changeattitude(self, roll):
         DC = self.getDC()
@@ -137,12 +141,13 @@ class NPC(Monster):
             while roll > 4:
                 amount +=1
                 roll -=5
-            self.attitude = self.getnextattitude("improved", amount)
+            self.attitude = self.getnextattitude(amount)
         elif roll < (DC - 4):
-            amount += 1
-            self.attitude = self.getnextattitude("reduced", amount)
+            amount -= 1
+            self.attitude = self.getnextattitude(amount)
         else:
             pass
+        return [amount, self.attitude]
 
 def getaverage(die):
     return (die/2) + 1
@@ -179,6 +184,21 @@ def buildstatblock(prio):
             if statblock["int"] < 12:
                 statblock = {"str": rollstat(), "dex": rollstat(), "con": rollstat(), "int": rollstat(), "wis": rollstat(), "cha": rollstat()}
             elif statblock["wis"] < 12:
+                statblock = {"str": rollstat(), "dex": rollstat(), "con": rollstat(), "int": rollstat(), "wis": rollstat(), "cha": rollstat()}
+            else:
+                statsokay = "y"
+        elif prio == "commoner":
+            if statblock["str"] > 14:
+                statblock = {"str": rollstat(), "dex": rollstat(), "con": rollstat(), "int": rollstat(), "wis": rollstat(), "cha": rollstat()}
+            elif statblock["dex"] > 14:
+                statblock = {"str": rollstat(), "dex": rollstat(), "con": rollstat(), "int": rollstat(), "wis": rollstat(), "cha": rollstat()}
+            elif statblock["con"] > 14:
+                statblock = {"str": rollstat(), "dex": rollstat(), "con": rollstat(), "int": rollstat(), "wis": rollstat(), "cha": rollstat()}
+            elif statblock["int"] > 14:
+                statblock = {"str": rollstat(), "dex": rollstat(), "con": rollstat(), "int": rollstat(), "wis": rollstat(), "cha": rollstat()}
+            elif statblock["wis"] > 14:
+                statblock = {"str": rollstat(), "dex": rollstat(), "con": rollstat(), "int": rollstat(), "wis": rollstat(), "cha": rollstat()}
+            elif statblock["cha"] > 14:
                 statblock = {"str": rollstat(), "dex": rollstat(), "con": rollstat(), "int": rollstat(), "wis": rollstat(), "cha": rollstat()}
             else:
                 statsokay = "y"
