@@ -1,4 +1,4 @@
 import characterbuilder
 
-def choosemonster():
+def choosemonster(environment):
     pass
