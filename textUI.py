@@ -4,6 +4,7 @@ from tkinter import messagebox
 import sys
 import characterbuilder
 import itemoptions
+import bestiary
 
 #Character Creation Functions: these functions are used for creating, displaying, and updating player characters in the game.
 def statsokay(prio):
@@ -51,6 +52,13 @@ def displayplayer(player):
     print("HP: " + str(player.getHP("current")) + "/" + str(player.getHP("max")) + "\nAC: " + str(player.getAC("physical")) + "\nTouch AC: " + str(player.getAC("magical")))
 
 #Combat Functions: these functions are used for managing combat encounters between the player and other characters in the game.
+def getmonsters(environment, number):
+    fighters = []
+    while number > 0:
+        fighters.append(bestiary.choosemonster(environment))
+        number -= 1
+    return fighters
+
 def attack(attacker, defender):
     print("The " + attacker.gettype() + " attacks!")
     attroll = attacker.weapon.swing(attacker)
@@ -97,7 +105,7 @@ def combat(combatants):
                     print("You run away!")
                     fight = False
                     break
-                if nextchar[1].health <= 0:
+                if nextchar[1].getHP("current") <= 0:
                     print("The " + nextchar[1].gettype() + " dies!")
                     XPearned += nextchar[1].XP
                     order.remove(nextchar)
@@ -112,7 +120,7 @@ def combat(combatants):
                     if type(nextchar[1]) == characterbuilder.Player:
                         hasswung = True
                         attack(i[1], nextchar[1])
-                        if nextchar[1].health <= 0:
+                        if nextchar[1].getHP("current") <= 0:
                             print("You have died.")
                             order.remove(nextchar)
                             exitgame()
@@ -171,14 +179,11 @@ def main():
                 exitgame()
             else:
                 print("Sorry, that's not a valid option.")
-        monsterstats = characterbuilder.buildstatblock("melee")
-        monster1 = characterbuilder.Monster("Goblin", monsterstats, 8, itemoptions.leather, 1, itemoptions.sword, 200, [])
-        monster2 = characterbuilder.Monster("Orc", monsterstats, 8, itemoptions.chain, 1, itemoptions.sword, 300, [])
-        fighters = [player, monster1]
+        fighters = getmonsters("Grassland", 2)
+        fighters.append(player)
         combat(fighters)
         if player.currXP == player.needXP:
             levelup(player)
-        mayor = characterbuilder.NPC("Mayor", characterbuilder.buildstatblock("commoner"), 6, itemoptions.clothes, 1, itemoptions.fists, 20, [], "Friendly")
         print("As you sag with relief after the battle, a man comes out of the town toward you, looking around fearfully.")
         print("\'Who are you?\' the man asks. \'What brings you to our town?\'")
         answer = int(input("What would you like to say?\n1. Just looking for adventure.\n2. I want a new home. (Persuasion Check)\n3. I\'m here to kill you! (Combat)\n"))
@@ -186,7 +191,7 @@ def main():
             print("The man shakes his head. \'No adventure here, I\'m afraid,\' he says. \'Better move on.\'")
             print("With a sigh, you turn away and look for a place to make camp.")
         elif answer == 2:
-            influence = negotiate(player, mayor)
+            influence = negotiate(player, bestiary.mayor)
             if influence:
                 print("\'Well, you're welcome to stay here! Come on in.\' He gestures for you to follow him inside the town.")
                 print("Life in the town is idyllic, and after a few days, you decide to stay forever.")
@@ -194,7 +199,7 @@ def main():
                 print("Sorry, we have no room in our town for random adventurers. Best of luck to you!")
                 print("Disappointed, you turn away and look for a place to make camp for the night. Maybe you'll have better luck elsewhere.")
         elif answer == 3:
-            fighters = [player, mayor]
+            fighters = getmonsters("Town", 1)
             combat(fighters)
             print("After killing the man, you realize he was the mayor of the town and are immediately driven off by the other citizens.")        
         exitgame()
