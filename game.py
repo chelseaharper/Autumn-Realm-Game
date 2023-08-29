@@ -4,11 +4,13 @@ import bestiary
 import itemoptions
 import utilities
 import config
+import map
 
 class Game():
-    def __init__(self, screen):
+    def __init__(self, screen, map):
         self.screen = screen
         self.state = utilities.GameState.NONE
+        self.map = map
     
     def set_up(self):
         self.state = utilities.GameState.RUNNING
@@ -21,3 +23,6 @@ class Game():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.state = utilities.GameState.ENDED
+    
+    def get_monster(self):
+        pass

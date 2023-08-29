@@ -27,12 +27,12 @@ def choosemonster(environment):
         return monster
 
 #Monsters
-goblin = characterbuilder.Monster("Goblin", characterbuilder.buildstatblock("melee"), 8, itemoptions.leather, 1, itemoptions.sword, 200, [])
-orc = characterbuilder.Monster("Orc", characterbuilder.buildstatblock("melee"), 8, itemoptions.chain, 1, itemoptions.sword, 300, [])
-fairy = characterbuilder.Monster("Fairy", characterbuilder.buildstatblock("melee"), 8, itemoptions.chain, 1, itemoptions.sword, 300, [])
-fairyguard = characterbuilder.Monster("Fairy", characterbuilder.buildstatblock("melee"), 8, itemoptions.chain, 1, itemoptions.sword, 300, [])
-slime = characterbuilder.Monster("Slime", characterbuilder.buildstatblock("melee"), 8, itemoptions.chain, 1, itemoptions.sword, 300, [])
-fairyqueen = characterbuilder.Monster("Fairy Queen", characterbuilder.buildstatblock("melee"), 8, itemoptions.chain, 1, itemoptions.sword, 300, [])
+goblin = characterbuilder.Monster("Goblin", characterbuilder.buildstatblock("melee"), 8, itemoptions.leather, 1, itemoptions.sword, 200, [], 0)
+orc = characterbuilder.Monster("Orc", characterbuilder.buildstatblock("melee"), 8, itemoptions.chain, 1, itemoptions.sword, 300, [], 0)
+fairy = characterbuilder.Monster("Fairy", characterbuilder.buildstatblock("melee"), 8, itemoptions.chain, 1, itemoptions.sword, 300, [], 0)
+fairyguard = characterbuilder.Monster("Fairy", characterbuilder.buildstatblock("melee"), 8, itemoptions.chain, 1, itemoptions.sword, 300, [], 0)
+slime = characterbuilder.Monster("Slime", characterbuilder.buildstatblock("melee"), 8, itemoptions.chain, 1, itemoptions.sword, 300, [], 0)
+fairyqueen = characterbuilder.Monster("Fairy Queen", characterbuilder.buildstatblock("melee"), 8, itemoptions.chain, 1, itemoptions.sword, 300, [], 0)
 
 #NPCs
-mayor = characterbuilder.NPC("Mayor", characterbuilder.buildstatblock("commoner"), 6, itemoptions.clothes, 1, itemoptions.fists, 20, [], "Friendly")
+mayor = characterbuilder.NPC("Mayor", characterbuilder.buildstatblock("commoner"), 6, itemoptions.clothes, 1, itemoptions.fists, 20, [], 0, "Friendly")

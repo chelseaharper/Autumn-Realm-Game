@@ -2,7 +2,7 @@ from random import randint
 import itemoptions
 
 class Creature:
-    def __init__(self, type, stats, hitdie, armor, level, weapon, items):
+    def __init__(self, type, stats, hitdie, armor, level, weapon, items, money):
         self.type = type
         self.stats = stats
         self.armor = armor
@@ -18,6 +18,7 @@ class Creature:
         self.weapon = weapon
         self.init = 0
         self.items = items
+        self.money = money
         self.updateitems([armor, weapon])
         self.sethealth()
         self.setAC()
@@ -63,8 +64,8 @@ class Creature:
         return self.items
 
 class Player(Creature):
-    def __init__(self, name, type, stats, hitdie, armor, level, weapon, items):
-        super().__init__(type, stats, hitdie, armor, level, weapon, items)
+    def __init__(self, name, type, stats, hitdie, armor, level, weapon, items, money):
+        super().__init__(type, stats, hitdie, armor, level, weapon, items, money)
         self.name = name
         self.currXP = 0
         self.needXP = 0
@@ -98,16 +99,16 @@ class Player(Creature):
         return HP
 
 class Monster(Creature):
-    def __init__(self, type, stats, hitdie, armor, level, weapon, XP, items):
-        super().__init__(type, stats, hitdie, armor, level, weapon, items)
+    def __init__(self, type, stats, hitdie, armor, level, weapon, XP, items, money):
+        super().__init__(type, stats, hitdie, armor, level, weapon, items, money)
         self.XP = XP
     
     def sethealth(self):
         self.health = (getaverage(self.hitdie) + self.getstatmod("con")) * self.level
 
 class NPC(Monster):
-    def __init__(self, type, stats, hitdie, armor, level, weapon, XP, items, attitude):
-        super().__init__(type, stats, hitdie, armor, level, weapon, XP, items)
+    def __init__(self, type, stats, hitdie, armor, level, weapon, XP, items, money, attitude):
+        super().__init__(type, stats, hitdie, armor, level, weapon, XP, items, money)
         self.attitudeoptions = ["Helpful", "Friendly", "Indifferent", "Unfriendly", "Hostile"]
         self.attitude = attitude
     

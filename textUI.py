@@ -39,7 +39,7 @@ def charcreator():
         playerclass = "Wizard"
     
     charname = input("What would you like to name your character? ")
-    return characterbuilder.Player(charname, playerclass, playerstats, hdie, armor, 1, weapon, [])
+    return characterbuilder.Player(charname, playerclass, playerstats, hdie, armor, 1, weapon, [], 0)
 
 def levelup(player):
     print("You have gained a level!")
