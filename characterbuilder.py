@@ -1,5 +1,9 @@
 from random import randint
 import itemoptions
+import pygame
+import config
+
+
 
 class Creature:
     def __init__(self, type, stats, hitdie, armor, level, weapon, items, money):
@@ -64,13 +68,23 @@ class Creature:
         return self.items
 
 class Player(Creature):
-    def __init__(self, name, type, stats, hitdie, armor, level, weapon, items, money):
+    def __init__(self, name, type, stats, hitdie, armor, level, weapon, items, money, x_position, y_position):
         super().__init__(type, stats, hitdie, armor, level, weapon, items, money)
         self.name = name
+        self.image = pygame.image.load("D:/Python learning materials and programs/Text Autumn Realm Game/images/player_05.png")
         self.currXP = 0
         self.needXP = 0
+        self.position = [x_position, y_position]
         self.setXPneeded()
     
+    def update_position(self, new_position):
+        self.position[0] = new_position[0]
+        self.position[1] = new_position[1]
+    
+    def render(self, screen, camera):
+        self.rect = pygame.Rect(self.position[0] * config.SCALE - (camera[0] * config.SCALE), self.position[1] * config.SCALE - (camera[1] * config.SCALE), config.SCALE, config.SCALE)
+        screen.blit(self.image, self.rect)
+
     def gettype(self):
         return self.name
     

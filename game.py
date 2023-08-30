@@ -4,25 +4,94 @@ import bestiary
 import itemoptions
 import utilities
 import config
-import map
+import map_functions
 
 class Game():
     def __init__(self, screen, map):
         self.screen = screen
+        self.objects = []
         self.state = utilities.GameState.NONE
         self.map = map
+        self.camera = [0, 0]
     
     def set_up(self):
+        character = charcreator()
+        self.player = character
+        self.objects.append(character)
         self.state = utilities.GameState.RUNNING
     
+    def determine_camera(self):
+        pass
+
     def update(self):
         self.screen.fill(config.black)
         self.handle_events()
+
+        self.map.render_map(self.screen, self)
+
+        for object in self.objects:
+            object.render(self.screen, self.camera)
     
     def handle_events(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.state = utilities.GameState.ENDED
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    self.state = utilities.GameState.ENDED
+                elif event.key == pygame.K_w: #move up
+                    self.move_unit(self.player, [0, -1])
+                elif event.key == pygame.K_s: #move down
+                    self.move_unit(self.player, [0, 1])
+                elif event.key == pygame.K_a: #move left
+                    self.move_unit(self.player, [-1, 0])
+                elif event.key == pygame.K_d: #move right
+                    self.move_unit(self.player, [1, 0])
     
+    def move_unit(self, unit, position_change):
+        new_position = [unit.position[0] + position_change[0], unit.position[1] + position_change[1]]
+        if new_position[0] < 0 or new_position[0] > (len(self.map.maplist[0]) - 1):
+            return
+        if new_position[1] < 0 or new_position[1] > (len(self.map.maplist) - 1):
+            return
+        if self.map.maplist[new_position[1]][new_position[0]] == "W":
+            return
+        unit.update_position(new_position)
+
     def get_monster(self):
         pass
+
+#Update and move these functions as appropriate to interface with a visual UI
+def statsokay(prio):
+    charstats = characterbuilder.buildstatblock(prio)
+    print("Your player stats are: " + str(charstats))
+    answer = input("Would you like to reroll? (y/n)")
+    while answer == "y":
+        charstats = characterbuilder.buildstatblock(prio)
+        print("Your player stats are: " + str(charstats))
+        answer = input("Would you like to reroll? (y/n)")
+    return charstats
+
+def charcreator():
+    charclass = int(input("What class would you like to play?\n1. fighter\n2. archer\n3. wizard\n"))
+    if (charclass == 1):
+        playerstats = statsokay("melee")
+        hdie = 10
+        armor = itemoptions.chain
+        weapon = itemoptions.sword
+        playerclass = "Fighter"
+    elif charclass == 2:
+        playerstats = statsokay("ranged")
+        hdie = 8
+        armor = itemoptions.leather
+        weapon = itemoptions.bow
+        playerclass = "Archer"
+    elif charclass == 3:
+        playerstats = statsokay("caster")
+        hdie = 6
+        armor = itemoptions.padded
+        weapon = itemoptions.wand
+        playerclass = "Wizard"
+    
+    charname = input("What would you like to name your character? ")
+    return characterbuilder.Player(charname, playerclass, playerstats, hdie, armor, 1, weapon, [], 0, 1, 1)

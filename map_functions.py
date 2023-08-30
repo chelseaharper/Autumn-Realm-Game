@@ -3,27 +3,27 @@ import config
 
 
 class Map():
-    def __init__(self, map):
-        self.map = map
+    def __init__(self):
+        self.maplist = []
 
     def load_map(self, file_name):
-        with open("D:/Python learning materials and programs/Pokemon Clone/images/maps/" + file_name + ".txt") as map_file:
+        with open("D:/Python learning materials and programs/Text Autumn Realm Game/images/" + file_name + ".txt") as map_file:
             for line in map_file:
                 tiles = []
                 for i in range(0, len(line) - 1, 2):
                     tiles.append(line[i])
 
-                self.map.append(tiles)
-            print(self.map)
+                self.maplist.append(tiles)
+            print(self.maplist)
     
-    def render_map(self, screen):
-        self.determine_camera()
+    def render_map(self, screen, game):
+        game.determine_camera()
         y_pos = 0
-        for line in self.map:
+        for line in self.maplist:
             x_pos = 0
             for tile in line:
                 image = map_tile_images[tile]
-                rect = pygame.Rect(x_pos * config.SCALE - (self.camera[0] * config.SCALE), y_pos * config.SCALE - (self.camera[1] * config.SCALE), config.SCALE, config.SCALE)
+                rect = pygame.Rect(x_pos * config.SCALE - (game.camera[0] * config.SCALE), y_pos * config.SCALE - (game.camera[1] * config.SCALE), config.SCALE, config.SCALE)
                 screen.blit(image, rect)
                 x_pos += 1
             y_pos += 1
