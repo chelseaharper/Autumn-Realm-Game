@@ -71,8 +71,12 @@ class Game():
     
     def handle_events(self):
         for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_w: #move up
+            if event.type == pygame.QUIT:
+                utilities.end_game()
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    utilities.end_game()
+                elif event.key == pygame.K_w: #move up
                     self.move_unit(self.player, [0, -1])
                 elif event.key == pygame.K_s: #move down
                     self.move_unit(self.player, [0, 1])

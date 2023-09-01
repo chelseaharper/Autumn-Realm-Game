@@ -5,6 +5,7 @@ import itemoptions
 import game
 import config
 import utilities
+from utilities import game_state
 import map_functions
 from time import sleep
 import pygame_menu
@@ -17,9 +18,9 @@ game_menu = False
 
 pygame.display.set_caption("Autumn's Realm")
 map = map_functions.Map()
-#map.load_map("map01")
-game_state = utilities.GameState.NONE
+map.load_map("map01")
 gameinstance = game.Game(screen, map)
+gameinstance.set_up()
 
 clock = pygame.time.Clock()
 def start_game():
@@ -58,9 +59,8 @@ while game_state != utilities.GameState.ENDED:
                 print("Outside Start Game Function!")
     elif game_menu == False and gameinstance.playstate == utilities.PlayState.MENU:
         gameinstance.set_up()
-        game_state = utilities.update_game_state(game_state)
-        if gameinstance.playstate == utilities.PlayState.MAP:
-            gameinstance.update()
-        elif gameinstance.playstate == utilities.PlayState.BATTLE:
-            pass
+    if gameinstance.playstate == utilities.PlayState.MAP:
+        gameinstance.update()
+    elif gameinstance.playstate == utilities.PlayState.BATTLE:
+        pass
     pygame.display.flip()

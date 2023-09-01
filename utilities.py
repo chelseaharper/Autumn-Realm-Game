@@ -11,11 +11,8 @@ class PlayState(Enum):
     MAP = 1,
     BATTLE = 2
 
-def update_game_state(state):
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            state = GameState.ENDED
-        elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_ESCAPE:
-                state = GameState.ENDED
-    return state
+game_state = GameState.NONE
+
+def end_game():
+    game_state = GameState.ENDED
+    exit()
