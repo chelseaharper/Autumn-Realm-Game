@@ -14,7 +14,6 @@ class Map():
                     tiles.append(line[i])
 
                 self.maplist.append(tiles)
-            print(self.maplist)
     
     def render_map(self, screen, game):
         game.determine_camera()
@@ -29,6 +28,7 @@ class Map():
             y_pos += 1
 
 map_tile_images = {
-    "G" : pygame.transform.scale(pygame.image.load("D:/Python learning materials and programs/Pokemon Clone/images/Used/tileGrass1.png"), (config.SCALE, config.SCALE)),
-    "W" : pygame.transform.scale(pygame.image.load("D:/Python learning materials and programs/Pokemon Clone/images/Used/rpgTile029.png"), (config.SCALE, config.SCALE))
+    config.MAP_TILE_GRASS : pygame.transform.scale(pygame.image.load("D:/Python learning materials and programs/Pokemon Clone/images/Used/tileGrass1.png"), (config.SCALE, config.SCALE)),
+    config.MAP_TILE_WATER : pygame.transform.scale(pygame.image.load("D:/Python learning materials and programs/Pokemon Clone/images/Used/rpgTile029.png"), (config.SCALE, config.SCALE)),
+    config.MAP_TILE_ROAD : pygame.transform.scale(pygame.image.load("D:/Python learning materials and programs/Pokemon Clone/images/Used/rpgTile024.png"), (config.SCALE, config.SCALE))
     }

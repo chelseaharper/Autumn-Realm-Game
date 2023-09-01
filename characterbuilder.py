@@ -72,6 +72,7 @@ class Player(Creature):
         super().__init__(type, stats, hitdie, armor, level, weapon, items, money)
         self.name = name
         self.image = pygame.image.load("D:/Python learning materials and programs/Text Autumn Realm Game/images/player_05.png")
+        self.image = pygame.transform.scale(self.image, (config.SCALE, config.SCALE))
         self.currXP = 0
         self.needXP = 0
         self.position = [x_position, y_position]

@@ -5,3 +5,7 @@ SCALE = 32
 
 screen_height = 480
 screen_width = 640
+
+MAP_TILE_GRASS = "G"
+MAP_TILE_WATER = "W"
+MAP_TILE_ROAD = "R"
