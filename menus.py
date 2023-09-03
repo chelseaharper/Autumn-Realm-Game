@@ -1,8 +1,7 @@
 from time import sleep
 import pygame
-import pygame_menu
-from pygame_menu import themes
 import buttons
+import config
 
 pygame.init()
 # surface = pygame.display.set_mode((600, 400))
@@ -58,3 +57,26 @@ start_menu_img = pygame.image.load("D:/Python learning materials and programs/Te
 start_button = buttons.Button(50, 200, start_menu_img)
 quit_menu_img = pygame.image.load("D:/Python learning materials and programs/Text Autumn Realm Game/images/Quit.png")
 quit_button = buttons.Button(350, 200, quit_menu_img)
+figher_img = pygame.image.load("D:/Python learning materials and programs/Text Autumn Realm Game/images/Fighter.png")
+figher_button = buttons.Button((config.screen_width // 2), 150, figher_img)
+archer_img = pygame.image.load("D:/Python learning materials and programs/Text Autumn Realm Game/images/Archer.png")
+archer_button = buttons.Button((config.screen_width // 2), 250, archer_img)
+wizard_img = pygame.image.load("D:/Python learning materials and programs/Text Autumn Realm Game/images/Wizard.png")
+wizard_button = buttons.Button((config.screen_width // 2), 350, wizard_img)
+yes_img = pygame.image.load("D:/Python learning materials and programs/Text Autumn Realm Game/images/Yes.png")
+yes_button = buttons.Button(100, 300, yes_img)
+no_img = pygame.image.load("D:/Python learning materials and programs/Text Autumn Realm Game/images/No.png")
+no_button = buttons.Button(100, 100, no_img)
+
+font = pygame.font.Font(None, 50)
+startscreen_text = font.render("Welcome to Autumn's Realm!", True, config.white)
+startscreen_textRect = startscreen_text.get_rect()
+startscreen_textRect.center = (config.screen_width//2, 100)
+
+charclass_text = font.render("Please select a class", True, config.white)
+charclass_textRect = charclass_text.get_rect()
+charclass_textRect.center = (config.screen_width//2, 50)
+
+stats_text = font.render("Are these stats okay?", True, config.white)
+stats_textRect = stats_text.get_rect()
+stats_textRect.center = (config.screen_width//2, 50)

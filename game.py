@@ -16,8 +16,8 @@ class Game():
         self.camera = [0, 0]
         self.player_moved = False
     
-    def set_up(self):
-        character = charcreator()
+    def set_up(self, charclass):
+        character = charcreator(charclass)
         self.player = character
         self.objects.append(character)
         self.playstate = utilities.PlayState.MAP
@@ -111,8 +111,8 @@ def statsokay(prio):
         answer = input("Would you like to reroll? (y/n)")
     return charstats
 
-def charcreator():
-    charclass = int(input("What class would you like to play?\n1. fighter\n2. archer\n3. wizard\n"))
+def charcreator(charclass):
+    print(charclass)
     if (charclass == 1):
         playerstats = statsokay("melee")
         hdie = 10
