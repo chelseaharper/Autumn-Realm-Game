@@ -98,7 +98,7 @@ class Game():
         new_position = [unit.position[0] + position_change[0], unit.position[1] + position_change[1]]
         if new_position[0] < 0 or new_position[0] > (len(self.map.maplist[0]) - 1):
             return
-        if new_position[1] < 0 or new_position[1] > (len(self.map.maplist) - 1):
+        if new_position[1] < 0 or new_position[1] > ((len(self.map.maplist) / 2) - 1):
             return
         if self.map.maplist[new_position[1]][new_position[0]] == "W":
             return

@@ -66,6 +66,9 @@ class Creature:
     
     def getitems(self):
         return self.items
+    
+    def roll_check(self, stat):
+        return (randint(1, 20) + self.getstatmod(stat))
 
 class Player(Creature):
     def __init__(self, name, type, stats, hitdie, armor, level, weapon, items, money, x_position, y_position):

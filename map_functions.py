@@ -22,7 +22,7 @@ class Map():
             x_pos = 0
             for tile in line:
                 image = map_tile_images[tile]
-                rect = pygame.Rect(x_pos * config.SCALE - (game.camera[0] * config.SCALE), y_pos * config.SCALE - (game.camera[1] * config.SCALE), config.SCALE, config.SCALE)
+                rect = pygame.Rect(x_pos * config.SCALE, y_pos * config.SCALE, config.SCALE, config.SCALE)
                 screen.blit(image, rect)
                 x_pos += 1
             y_pos += 1
