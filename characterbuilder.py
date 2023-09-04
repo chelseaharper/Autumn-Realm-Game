@@ -71,7 +71,7 @@ class Player(Creature):
     def __init__(self, name, type, stats, hitdie, armor, level, weapon, items, money, x_position, y_position):
         super().__init__(type, stats, hitdie, armor, level, weapon, items, money)
         self.name = name
-        self.image = pygame.image.load("D:/Python learning materials and programs/Text Autumn Realm Game/images/player_05.png")
+        self.image = pygame.image.load("D:/Python learning materials and programs/Text Autumn Realm Game/images/RPG_Kenney_Tiles/tile_0098.png")
         self.image = pygame.transform.scale(self.image, (config.SCALE, config.SCALE))
         self.currXP = 0
         self.needXP = 0
@@ -114,16 +114,18 @@ class Player(Creature):
         return HP
 
 class Monster(Creature):
-    def __init__(self, type, stats, hitdie, armor, level, weapon, XP, items, money):
+    def __init__(self, type, stats, hitdie, armor, level, weapon, XP, items, money, monster_image):
         super().__init__(type, stats, hitdie, armor, level, weapon, items, money)
         self.XP = XP
+        self.image = pygame.image.load("D:/Python learning materials and programs/Text Autumn Realm Game/images/RPG_Kenney_Tiles/" + monster_image + ".png")
+        self.image = pygame.transform.scale(self.image, (config.SCALE, config.SCALE))
     
     def sethealth(self):
         self.health = (getaverage(self.hitdie) + self.getstatmod("con")) * self.level
 
 class NPC(Monster):
-    def __init__(self, type, stats, hitdie, armor, level, weapon, XP, items, money, attitude):
-        super().__init__(type, stats, hitdie, armor, level, weapon, XP, items, money)
+    def __init__(self, type, stats, hitdie, armor, level, weapon, XP, items, money, attitude, monster_image):
+        super().__init__(type, stats, hitdie, armor, level, weapon, XP, items, money, monster_image)
         self.attitudeoptions = ["Helpful", "Friendly", "Indifferent", "Unfriendly", "Hostile"]
         self.attitude = attitude
     

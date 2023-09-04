@@ -18,16 +18,16 @@ def choosemonster(environment):
         monstertype = random.choice([goblin, orc])
     elif environment == "Town":
         monstertype = random.choice([mayor])
-    monster = characterbuilder.Monster(monstertype[0], monstertype[1], monstertype[2], monstertype[3], monstertype[4], monstertype[5], monstertype[6], monstertype[7], monstertype[8])
+    monster = characterbuilder.Monster(monstertype[0], monstertype[1], monstertype[2], monstertype[3], monstertype[4], monstertype[5], monstertype[6], monstertype[7], monstertype[8], monstertype[9])
     return monster
 
 #Monsters
-goblin = ["Goblin", characterbuilder.buildstatblock("melee"), 8, itemoptions.leather, 1, itemoptions.sword, 200, [], 0]
-orc = ["Orc", characterbuilder.buildstatblock("melee"), 8, itemoptions.chain, 1, itemoptions.sword, 300, [], 0]
-fairy = ["Fairy", characterbuilder.buildstatblock("melee"), 8, itemoptions.chain, 1, itemoptions.sword, 300, [], 0]
-fairyguard = ["Fairy", characterbuilder.buildstatblock("melee"), 8, itemoptions.chain, 1, itemoptions.sword, 300, [], 0]
-slime = ["Slime", characterbuilder.buildstatblock("melee"), 8, itemoptions.chain, 1, itemoptions.sword, 300, [], 0]
-fairyqueen = ["Fairy Queen", characterbuilder.buildstatblock("melee"), 8, itemoptions.chain, 1, itemoptions.sword, 300, [], 0]
+goblin = ["Goblin", characterbuilder.buildstatblock("melee"), 8, itemoptions.leather, 1, itemoptions.sword, 200, [], 0, "tile_0108"]
+orc = ["Orc", characterbuilder.buildstatblock("melee"), 8, itemoptions.chain, 1, itemoptions.sword, 300, [], 0, "tile_0108"]
+fairy = ["Fairy", characterbuilder.buildstatblock("melee"), 8, itemoptions.chain, 1, itemoptions.sword, 300, [], 0, "tile_0099"]
+fairyguard = ["Fairy", characterbuilder.buildstatblock("melee"), 8, itemoptions.chain, 1, itemoptions.sword, 300, [], 0, "tile_0099"]
+slime = ["Slime", characterbuilder.buildstatblock("melee"), 8, itemoptions.chain, 1, itemoptions.sword, 300, [], 0, "tile_0123"]
+fairyqueen = ["Fairy Queen", characterbuilder.buildstatblock("melee"), 8, itemoptions.chain, 1, itemoptions.sword, 300, [], 0, "tile_0099"]
 # goblin = characterbuilder.Monster("Goblin", characterbuilder.buildstatblock("melee"), 8, itemoptions.leather, 1, itemoptions.sword, 200, [], 0)
 # orc = characterbuilder.Monster("Orc", characterbuilder.buildstatblock("melee"), 8, itemoptions.chain, 1, itemoptions.sword, 300, [], 0)
 # fairy = characterbuilder.Monster("Fairy", characterbuilder.buildstatblock("melee"), 8, itemoptions.chain, 1, itemoptions.sword, 300, [], 0)
@@ -36,4 +36,4 @@ fairyqueen = ["Fairy Queen", characterbuilder.buildstatblock("melee"), 8, itemop
 # fairyqueen = characterbuilder.Monster("Fairy Queen", characterbuilder.buildstatblock("melee"), 8, itemoptions.chain, 1, itemoptions.sword, 300, [], 0)
 
 #NPCs
-mayor = characterbuilder.NPC("Mayor", characterbuilder.buildstatblock("commoner"), 6, itemoptions.clothes, 1, itemoptions.fists, 20, [], 0, "Friendly")
+mayor = characterbuilder.NPC("Mayor", characterbuilder.buildstatblock("commoner"), 6, itemoptions.clothes, 1, itemoptions.fists, 20, [], 0, "Friendly", "tile_0085")

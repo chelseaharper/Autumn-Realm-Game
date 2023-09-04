@@ -115,5 +115,5 @@ while game_state != utilities.GameState.ENDED:
     if gameinstance.playstate == utilities.PlayState.MAP:
         gameinstance.update()
     elif gameinstance.playstate == utilities.PlayState.BATTLE:
-        pass
+        gameinstance.update()
     pygame.display.flip()

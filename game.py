@@ -6,6 +6,7 @@ import utilities
 import config
 import map_functions
 import random
+import combat
 
 class Game():
     def __init__(self, screen, map):
@@ -15,6 +16,7 @@ class Game():
         self.map = map
         self.camera = [0, 0]
         self.player_moved = False
+        self.battle = None
     
     def set_up(self, charclass, charstats, player):
         character = charcreator(player, charclass, charstats)
@@ -27,17 +29,23 @@ class Game():
         pass
 
     def update(self):
-        self.player_moved = False
-        self.screen.fill(config.black)
-        self.handle_events()
+        if self.playstate == utilities.PlayState.MAP:
+            self.player_moved = False
+            self.screen.fill(config.black)
+            self.handle_events()
 
-        self.map.render_map(self.screen, self)
+            self.map.render_map(self.screen, self)
 
-        for object in self.objects:
-            object.render(self.screen, self.camera)
-        
-        if self.player_moved:
-            self.determine_game_events()
+            for object in self.objects:
+                object.render(self.screen, self.camera)
+            
+            if self.player_moved:
+                self.determine_game_events()
+        elif self.playstate == utilities.PlayState.BATTLE:
+            self.battle.update()
+            self.battle.render_battle()
+            if self.battle.monsters.health <= 0:
+                self.playstate = utilities.PlayState.MAP
     
     def determine_game_events(self):
         map_tile = self.map.maplist[self.player.position[1]][self.player.position[0]]
@@ -66,7 +74,9 @@ class Game():
                 case "t":
                     monsterhome = "Town"
             found_monster = bestiary.choosemonster(monsterhome)
-            print("You Found a Monster!")
+
+            self.battle = combat.Battle(self.screen, found_monster, self.player)
+            self.playstate = utilities.PlayState.BATTLE
     
     def handle_events(self):
         for event in pygame.event.get():
@@ -75,13 +85,13 @@ class Game():
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     utilities.end_game()
-                elif event.key == pygame.K_w: #move up
+                elif event.key == pygame.K_w or event.key == pygame.K_UP: #move up
                     self.move_unit(self.player, [0, -1])
-                elif event.key == pygame.K_s: #move down
+                elif event.key == pygame.K_s or event.key == pygame.K_DOWN: #move down
                     self.move_unit(self.player, [0, 1])
-                elif event.key == pygame.K_a: #move left
+                elif event.key == pygame.K_a or event.key == pygame.K_LEFT: #move left
                     self.move_unit(self.player, [-1, 0])
-                elif event.key == pygame.K_d: #move right
+                elif event.key == pygame.K_d or event.key == pygame.K_RIGHT: #move right
                     self.move_unit(self.player, [1, 0])
     
     def move_unit(self, unit, position_change):
@@ -100,15 +110,15 @@ class Game():
         pass
 
 #Update and move these functions as appropriate to interface with a visual UI
-def statsokay(prio):
-    charstats = characterbuilder.buildstatblock(prio)
-    print("Your player stats are: " + str(charstats))
-    answer = input("Would you like to reroll? (y/n)")
-    while answer == "y":
-        charstats = characterbuilder.buildstatblock(prio)
-        print("Your player stats are: " + str(charstats))
-        answer = input("Would you like to reroll? (y/n)")
-    return charstats
+# def statsokay(prio):
+#     charstats = characterbuilder.buildstatblock(prio)
+#     print("Your player stats are: " + str(charstats))
+#     answer = input("Would you like to reroll? (y/n)")
+#     while answer == "y":
+#         charstats = characterbuilder.buildstatblock(prio)
+#         print("Your player stats are: " + str(charstats))
+#         answer = input("Would you like to reroll? (y/n)")
+#     return charstats
 
 def charcreator(charname, charclass, stats):
     if (charclass == 1):
