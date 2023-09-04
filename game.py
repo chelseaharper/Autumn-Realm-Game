@@ -6,7 +6,7 @@ import utilities
 import config
 import map_functions
 import random
-import combat
+import encounter
 
 class Game():
     def __init__(self, screen, map):
@@ -44,7 +44,7 @@ class Game():
         elif self.playstate == utilities.PlayState.BATTLE:
             self.battle.update()
             self.battle.render_battle()
-            if self.battle.monsters.health <= 0:
+            if self.battle.state == "ended":
                 self.playstate = utilities.PlayState.MAP
     
     def determine_game_events(self):
@@ -75,7 +75,7 @@ class Game():
                     monsterhome = "Town"
             found_monster = bestiary.choosemonster(monsterhome)
 
-            self.battle = combat.Battle(self.screen, found_monster, self.player)
+            self.battle = encounter.Battle(self.screen, found_monster, self.player)
             self.playstate = utilities.PlayState.BATTLE
     
     def handle_events(self):

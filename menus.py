@@ -20,6 +20,11 @@ yes_button = buttons.Button(400, 100, yes_img)
 no_img = pygame.image.load("D:/Python learning materials and programs/Text Autumn Realm Game/images/No.png")
 no_button = buttons.Button(400, 300, no_img)
 
+attack_img = pygame.transform.scale(pygame.image.load("D:/Python learning materials and programs/Text Autumn Realm Game/images/Attack.png"), (config.SCALE * 6, config.SCALE * 3))
+attack_button = buttons.Button(100, 300, attack_img)
+run_img = pygame.transform.scale(pygame.image.load("D:/Python learning materials and programs/Text Autumn Realm Game/images/Run.png"), (config.SCALE * 6, config.SCALE * 3))
+run_button = buttons.Button(300, 300, run_img)
+
 font = pygame.font.Font(None, 45)
 startscreen_text = font.render("Welcome to Autumn's Realm!", True, config.white)
 startscreen_textRect = startscreen_text.get_rect()
