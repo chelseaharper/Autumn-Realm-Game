@@ -4,54 +4,6 @@ import buttons
 import config
 
 pygame.init()
-# surface = pygame.display.set_mode((600, 400))
-
-# def set_difficulty(value, difficulty):
-#     print(value)
-#     print(difficulty)
-
-# def start_the_game():
-#     mainmenu._open(loading)
-#     pygame.time.set_timer(update_loading, 30)
-
-# def level_menu():
-#     mainmenu._open(level)
-
-
-# mainmenu = pygame_menu.Menu('Welcome', 600, 400, theme=themes.THEME_SOLARIZED)
-# mainmenu.add.text_input('Name: ', default='username')
-# mainmenu.add.button('Play', start_the_game)
-# mainmenu.add.button('Levels', level_menu)
-# mainmenu.add.button('Quit', pygame_menu.events.EXIT)
-
-# level = pygame_menu.Menu('Select a Difficulty', 600, 400, theme=themes.THEME_BLUE)
-# level.add.selector('Difficulty :', [('Hard', 1), ('Easy', 2)], onchange=set_difficulty)
-
-# loading = pygame_menu.Menu('Loading the Game...', 600, 400, theme=themes.THEME_DARK)
-# loading.add.progress_bar("Progress", progressbar_id = "1", default=0, width = 200, )
-
-# arrow = pygame_menu.widgets.LeftArrowSelection(arrow_size = (10, 15))
-
-# update_loading = pygame.USEREVENT + 0
-
-# while True:
-#     events = pygame.event.get()
-#     for event in events:
-#         if event.type == update_loading:
-#             progress = loading.get_widget("1")
-#             progress.set_value(progress.get_value() + 1)
-#             if progress.get_value() == 100:
-#                 pygame.time.set_timer(update_loading, 0)
-#         if event.type == pygame.QUIT:
-#             exit()
-
-#     if mainmenu.is_enabled():
-#         mainmenu.update(events)
-#         mainmenu.draw(surface)
-#         if (mainmenu.get_current().get_selected_widget()):
-#             arrow.draw(surface, mainmenu.get_current().get_selected_widget())
-
-#     pygame.display.update()
 
 start_menu_img = pygame.image.load("D:/Python learning materials and programs/Text Autumn Realm Game/images/Start.png")
 start_button = buttons.Button(50, 200, start_menu_img)
@@ -64,11 +16,11 @@ archer_button = buttons.Button((config.screen_width // 2), 250, archer_img)
 wizard_img = pygame.image.load("D:/Python learning materials and programs/Text Autumn Realm Game/images/Wizard.png")
 wizard_button = buttons.Button((config.screen_width // 2), 350, wizard_img)
 yes_img = pygame.image.load("D:/Python learning materials and programs/Text Autumn Realm Game/images/Yes.png")
-yes_button = buttons.Button(100, 300, yes_img)
+yes_button = buttons.Button(400, 100, yes_img)
 no_img = pygame.image.load("D:/Python learning materials and programs/Text Autumn Realm Game/images/No.png")
-no_button = buttons.Button(100, 100, no_img)
+no_button = buttons.Button(400, 300, no_img)
 
-font = pygame.font.Font(None, 50)
+font = pygame.font.Font(None, 45)
 startscreen_text = font.render("Welcome to Autumn's Realm!", True, config.white)
 startscreen_textRect = startscreen_text.get_rect()
 startscreen_textRect.center = (config.screen_width//2, 100)
@@ -79,4 +31,37 @@ charclass_textRect.center = (config.screen_width//2, 50)
 
 stats_text = font.render("Are these stats okay?", True, config.white)
 stats_textRect = stats_text.get_rect()
-stats_textRect.center = (config.screen_width//2, 50)
+stats_textRect.center = (config.screen_width//2, 25)
+
+player_name_text = font.render("Please input your character's name.", True, config.white)
+player_name_textRect = player_name_text.get_rect()
+player_name_textRect.center = (config.screen_width//2, 25)
+
+name_input_rect = pygame.Rect(200, 200, 320, 50)
+
+def display_stats(statblock):
+    str_text = font.render("Strength: " + str(statblock["str"]), True, config.white)
+    str_textRect = str_text.get_rect()
+    str_textRect.center = (150, 75)
+    
+    dex_text = font.render("Dexterity: " + str(statblock["dex"]), True, config.white)
+    dex_textRect = dex_text.get_rect()
+    dex_textRect.center = (150, 150)
+    
+    con_text = font.render("Constitution: " + str(statblock["con"]), True, config.white)
+    con_textRect = con_text.get_rect()
+    con_textRect.center = (150, 225)
+    
+    int_text = font.render("Intelligence: " + str(statblock["int"]), True, config.white)
+    int_textRect = int_text.get_rect()
+    int_textRect.center = (150, 300)
+    
+    wis_text = font.render("Wisdom: " + str(statblock["wis"]), True, config.white)
+    wis_textRect = wis_text.get_rect()
+    wis_textRect.center = (150, 375)
+    
+    cha_text = font.render("Charisma: " + str(statblock["cha"]), True, config.white)
+    cha_textRect = cha_text.get_rect()
+    cha_textRect.center = (150, 450)
+    return {str_text:str_textRect, dex_text:dex_textRect, con_text:con_textRect, int_text:int_textRect, wis_text:wis_textRect, cha_text:cha_textRect}
+

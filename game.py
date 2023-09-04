@@ -16,12 +16,11 @@ class Game():
         self.camera = [0, 0]
         self.player_moved = False
     
-    def set_up(self, charclass):
-        character = charcreator(charclass)
+    def set_up(self, charclass, charstats, player):
+        character = charcreator(player, charclass, charstats)
         self.player = character
         self.objects.append(character)
         self.playstate = utilities.PlayState.MAP
-        print(str(self.playstate))
         self.map.load_map("map01")
     
     def determine_camera(self):
@@ -111,26 +110,20 @@ def statsokay(prio):
         answer = input("Would you like to reroll? (y/n)")
     return charstats
 
-def charcreator(charclass):
-    print(charclass)
+def charcreator(charname, charclass, stats):
     if (charclass == 1):
-        playerstats = statsokay("melee")
         hdie = 10
         armor = itemoptions.chain
         weapon = itemoptions.sword
         playerclass = "Fighter"
     elif charclass == 2:
-        playerstats = statsokay("ranged")
         hdie = 8
         armor = itemoptions.leather
         weapon = itemoptions.bow
         playerclass = "Archer"
     elif charclass == 3:
-        playerstats = statsokay("caster")
         hdie = 6
         armor = itemoptions.padded
         weapon = itemoptions.wand
         playerclass = "Wizard"
-    
-    charname = input("What would you like to name your character? ")
-    return characterbuilder.Player(charname, playerclass, playerstats, hdie, armor, 1, weapon, [], 0, 1, 1)
+    return characterbuilder.Player(charname, playerclass, stats, hdie, armor, 1, weapon, [], 0, 1, 1)
