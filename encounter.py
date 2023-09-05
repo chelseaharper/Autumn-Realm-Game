@@ -108,6 +108,11 @@ class Battle():
         
 
     def update(self):
+        if self.monster.health <= 0:
+            self.state = "ended"
+        if self.player.health <= 0:
+            self.playerstate = "dead"
+            self.state = "ended"
         for event in pygame.event.get():
             if event == pygame.quit:
                 utilities.end_game()
@@ -116,11 +121,7 @@ class Battle():
                     utilities.end_game()
             elif self.player_turn and menus.attack_button.draw(self.screen):
                 self.attack(self.player, self.monster)
-                if self.monster.health <= 0:
-                    self.state = "ended"
-                if self.player.health <= 0:
-                    self.playerstate = "dead"
-                    self.state = "ended"
+                
             elif menus.run_button.draw(self.screen):
                 escape = self.player.roll_check("dex")
                 block = self.monster.roll_check("dex")
