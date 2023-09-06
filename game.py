@@ -46,8 +46,12 @@ class Game():
             self.battle.render_battle()
             if self.battle.playerstate == "dead" and self.battle.monster_hit_player == 0:
                 utilities.end_game()
-            elif self.battle.state == "ended" and self.battle.playerstate == "alive" and self.battle.player_hit_monster == 0:
-                self.playstate = utilities.PlayState.MAP
+            elif self.battle.state == "ended" and self.battle.playerstate == "won" and self.battle.player_hit_monster == 0:
+                stat_increase = self.player.getXP(self.battle.monster)
+                if stat_increase:
+                    self.playstate = utilities.PlayState.STATMENU
+                else:
+                    self.playstate = utilities.PlayState.MAP
     
     def determine_game_events(self):
         map_tile = self.map.maplist[self.player.position[1]][self.player.position[0]]

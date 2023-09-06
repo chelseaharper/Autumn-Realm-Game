@@ -1,20 +1,23 @@
 import sys
-import pygame
-import characterbuilder
+import buttons
 import bestiary
 import itemoptions
+from time import sleep
+import pygame
+import characterbuilder
 import game
 import config
 import utilities
 from utilities import game_state
 import map_functions
-from time import sleep
-import buttons
 import menus
 
+#Initialize pygame, define screen, and create needed variables for while loop
 pygame.init()
-
 screen = pygame.display.set_mode((config.screen_width, config.screen_height))
+pygame.display.set_caption("Autumn's Realm")
+clock = pygame.time.Clock()
+
 game_menu = True
 player_menu = False
 charclass = 0
@@ -24,17 +27,16 @@ charstats = {}
 player_named = False
 player = ""
 
-pygame.display.set_caption("Autumn's Realm")
 map = map_functions.Map()
 map.load_map("map01")
 gameinstance = game.Game(screen, map)
 
-clock = pygame.time.Clock()
+#Functions and variables for preparing a game either by creating a new game or loading a saved game
 def start_game():
     global game_menu
     global game_state
 
-    game_menu= False
+    game_menu = False
     gameinstance.set_up()
     game_state = utilities.update_game_state(game_state)
 
@@ -44,8 +46,10 @@ def load_game():
 update_start = pygame.USEREVENT + 0
 update_quit = pygame.USEREVENT + 1
 
+#Primary game loop
 while game_state != utilities.GameState.ENDED:
     clock.tick(50)
+    #Allow players to choose whether or not to play. TODO: Add Load Game option
     if game_menu == True:
         screen.blit(menus.startscreen_text, menus.startscreen_textRect)
         for events in pygame.event.get():
@@ -54,6 +58,7 @@ while game_state != utilities.GameState.ENDED:
                 player_menu = True
             elif menus.quit_button.draw(screen):
                 utilities.end_game()
+    #Allow players who choose a new game to select what clas they wish to play. POSSIBLE EXPANSION: Allow players to select image
     elif player_menu == True and class_selected == False:
         for events in pygame.event.get():
             screen.fill(config.black)
@@ -73,6 +78,7 @@ while game_state != utilities.GameState.ENDED:
                 charclass = [3, "caster"]
                 charstats = characterbuilder.buildstatblock(charclass[1])
                 class_selected = True
+    #Allow players who choose a new game to see and approve their character stats
     elif player_menu == True and class_selected == True and stats_chosen == False:
         for events in pygame.event.get():
             screen.fill(config.black)
@@ -88,7 +94,8 @@ while game_state != utilities.GameState.ENDED:
                 stats_chosen = True
             elif menus.no_button.draw(screen):
                 reroll = 'y'
-                charstats = characterbuilder.buildstatblock(charclass[1])         
+                charstats = characterbuilder.buildstatblock(charclass[1])
+    #Get character name from players in order to create their character and start the game     
     elif player_menu == True and class_selected == True and stats_chosen == True and player_named == False:
         screen.fill(config.black)
         pygame.draw.rect(screen, config.white, menus.name_input_rect, 4)
@@ -109,11 +116,17 @@ while game_state != utilities.GameState.ENDED:
                     player_named = True
                 else:
                     player += events.unicode
+    #Set up game using information collected in previous menus
     elif game_menu == False and gameinstance.playstate == utilities.PlayState.MENU:
         gameinstance.set_up(charclass[0], charstats, player)
         game_state = utilities.GameState.RUNNING
+    #Main gameplay; includes moving and allows random encounters. TODO: add travel to towns and other areas
     if gameinstance.playstate == utilities.PlayState.MAP:
         gameinstance.update()
+    #Battle processing to resolve rnadon encounters
     elif gameinstance.playstate == utilities.PlayState.BATTLE:
+        gameinstance.update()
+    #TODO: Allows players to raise a stat (when written)
+    elif gameinstance.playstate == utilities.PlayState.STATMENU:
         gameinstance.update()
     pygame.display.flip()

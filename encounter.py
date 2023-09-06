@@ -108,10 +108,11 @@ class Battle():
         
 
     def update(self):
-        if self.monster.health <= 0:
-            self.state = "ended"
         if self.player.health <= 0:
             self.playerstate = "dead"
+            self.state = "ended"
+        if self.monster.health <= 0:
+            self.playerstate = "won"
             self.state = "ended"
         for event in pygame.event.get():
             if event == pygame.quit:

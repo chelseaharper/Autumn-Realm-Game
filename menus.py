@@ -5,6 +5,7 @@ import config
 
 pygame.init()
 
+#Buttons and text used in introductory menu to collect information and start game
 start_menu_img = pygame.image.load("D:/Python learning materials and programs/Text Autumn Realm Game/images/Start.png")
 start_button = buttons.Button(50, 200, start_menu_img)
 quit_menu_img = pygame.image.load("D:/Python learning materials and programs/Text Autumn Realm Game/images/Quit.png")
@@ -19,11 +20,6 @@ yes_img = pygame.image.load("D:/Python learning materials and programs/Text Autu
 yes_button = buttons.Button(400, 100, yes_img)
 no_img = pygame.image.load("D:/Python learning materials and programs/Text Autumn Realm Game/images/No.png")
 no_button = buttons.Button(400, 300, no_img)
-
-attack_img = pygame.transform.scale(pygame.image.load("D:/Python learning materials and programs/Text Autumn Realm Game/images/Attack.png"), (config.SCALE * 5, config.SCALE * 2.5))
-attack_button = buttons.Button(150, 275, attack_img)
-run_img = pygame.transform.scale(pygame.image.load("D:/Python learning materials and programs/Text Autumn Realm Game/images/Run.png"), (config.SCALE * 5, config.SCALE * 2.5))
-run_button = buttons.Button(325, 275, run_img)
 
 font = pygame.font.Font(None, 45)
 startscreen_text = font.render("Welcome to Autumn's Realm!", True, config.white)
@@ -44,6 +40,13 @@ player_name_textRect.center = (config.screen_width//2, 25)
 
 name_input_rect = pygame.Rect(200, 200, 320, 50)
 
+#Buttons used in combat
+attack_img = pygame.transform.scale(pygame.image.load("D:/Python learning materials and programs/Text Autumn Realm Game/images/Attack.png"), (config.SCALE * 5, config.SCALE * 2.5))
+attack_button = buttons.Button(150, 275, attack_img)
+run_img = pygame.transform.scale(pygame.image.load("D:/Python learning materials and programs/Text Autumn Realm Game/images/Run.png"), (config.SCALE * 5, config.SCALE * 2.5))
+run_button = buttons.Button(325, 275, run_img)
+
+#Function for taking information gathered during introductory game set up and displaying the characters stats to the player for approval
 def display_stats(statblock):
     str_text = font.render("Strength: " + str(statblock["str"]), True, config.white)
     str_textRect = str_text.get_rect()

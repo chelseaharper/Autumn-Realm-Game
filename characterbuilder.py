@@ -23,6 +23,7 @@ class Creature:
         self.init = 0
         self.items = items
         self.money = money
+        self.stat_increase = 0
         self.updateitems([armor, weapon])
         self.sethealth()
         self.setAC()
@@ -94,17 +95,13 @@ class Player(Creature):
     
     def raiselevel(self):
         self.level += 1
-        if (self.level % 2) == 0:
-            self.stats["con"] += 1
-            if self.type == "Fighter":
-                self.stats["str"] += 1
-            elif self.type == "Archer":
-                self.stats["dex"] += 1
-            elif self.type == "Wizard":
-                self.stats["int"] += 1
+        self.stats["con"] += 0.25
+        self.stat_increase += 0.25
         self.maxhealth += (randint(1, self.hitdie) + self.getstatmod("con"))
         self.changehealth(getaverage(self.hitdie))
         self.setXPneeded()
+        if self.stat_increase % 1 == 0:
+            return True
     
     def setXPneeded(self):
         self.needXP += 500 * self.level
@@ -115,6 +112,11 @@ class Player(Creature):
         elif HPtype == "max":
             HP = self.maxhealth
         return HP
+    
+    def getXP(self, monster):
+        self.currXP += monster.XP
+        if self.currXP >= self.needXP:
+            return self.raiselevel()
 
 class Monster(Creature):
     def __init__(self, type, stats, hitdie, armor, level, weapon, XP, items, money, monster_image):

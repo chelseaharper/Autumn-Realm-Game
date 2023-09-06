@@ -9,7 +9,8 @@ class GameState(Enum):
 class PlayState(Enum):
     MENU = 0,
     MAP = 1,
-    BATTLE = 2
+    BATTLE = 2,
+    STATMENU = 3
 
 game_state = GameState.NONE
 
