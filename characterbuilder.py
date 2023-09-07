@@ -117,6 +117,10 @@ class Player(Creature):
         self.currXP += monster.XP
         if self.currXP >= self.needXP:
             return self.raiselevel()
+    
+    def raise_stat(self, stat):
+        self.stats[stat] += 1
+        self.stat_increase -= 1
 
 class Monster(Creature):
     def __init__(self, type, stats, hitdie, armor, level, weapon, XP, items, money, monster_image):

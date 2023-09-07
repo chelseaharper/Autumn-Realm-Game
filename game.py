@@ -52,6 +52,14 @@ class Game():
                     self.playstate = utilities.PlayState.STATMENU
                 else:
                     self.playstate = utilities.PlayState.MAP
+        elif self.playstate == utilities.PlayState.STATMENU:
+            if self.player.type == "Fighter":
+                self.player.raise_stat("con")
+            elif self.player.type == "Archer":
+                self.player.raise_stat("dex")
+            elif self.player.type == "Wizard":
+                self.player.raise_stat("int")
+            self.playstate = utilities.PlayState.MAP
     
     def determine_game_events(self):
         map_tile = self.map.maplist[self.player.position[1]][self.player.position[0]]
