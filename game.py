@@ -58,6 +58,8 @@ class Game():
 
         if map_tile == config.MAP_TILE_ROAD:
             return
+        if map_tile == config.MAP_TILE_TOWN:
+            return
         
         self.determine_monster(map_tile)
     
@@ -108,6 +110,8 @@ class Game():
             return
         if self.map.maplist[new_position[1]][new_position[0]] == "W":
             return
+        if self.map.maplist[new_position[1]][new_position[0]] == "T":
+            self.player.changehealth(self.player.getHP("max"))
         
         self.player_moved = True
         unit.update_position(new_position)

@@ -9,3 +9,4 @@ screen_width = 640
 MAP_TILE_GRASS = "G"
 MAP_TILE_WATER = "W"
 MAP_TILE_ROAD = "R"
+MAP_TILE_TOWN = "T"
