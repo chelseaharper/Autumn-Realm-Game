@@ -31,5 +31,6 @@ map_tile_images = {
     config.MAP_TILE_GRASS : pygame.transform.scale(pygame.image.load("D:/Python learning materials and programs/Text Autumn Realm Game/images/tileGrass1.png"), (config.SCALE, config.SCALE)),
     config.MAP_TILE_WATER : pygame.transform.scale(pygame.image.load("D:/Python learning materials and programs/Text Autumn Realm Game/images/rpgTile029.png"), (config.SCALE, config.SCALE)),
     config.MAP_TILE_ROAD : pygame.transform.scale(pygame.image.load("D:/Python learning materials and programs/Text Autumn Realm Game/images/rpgTile024.png"), (config.SCALE, config.SCALE)),
-    config.MAP_TILE_TOWN : pygame.transform.scale(pygame.image.load("D:/Python learning materials and programs/Text Autumn Realm Game/images/RPG_Kenney_Tiles/tile_0048.png"), (config.SCALE, config.SCALE))
+    config.MAP_TILE_TOWN : pygame.transform.scale(pygame.image.load("D:/Python learning materials and programs/Text Autumn Realm Game/images/RPG_Kenney_Tiles/tile_0048.png"), (config.SCALE, config.SCALE)),
+    config.MAP_TILE_STONE : pygame.transform.scale(pygame.image.load("D:/Python learning materials and programs/Text Autumn Realm Game/images/block_06.png"), (config.SCALE, config.SCALE))
     }

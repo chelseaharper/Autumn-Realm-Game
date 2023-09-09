@@ -118,8 +118,10 @@ class Game():
             return
         if self.map.maplist[new_position[1]][new_position[0]] == "W":
             return
+        if self.map.maplist[new_position[1]][new_position[0]] == "S":
+            return
         if self.map.maplist[new_position[1]][new_position[0]] == "T":
-            self.player.changehealth(self.player.getHP("max"))
+            self.player.changehealth(self.player.getHP("max")) #Change so it loads a new map based on position
         
         self.player_moved = True
         unit.update_position(new_position)
@@ -127,17 +129,7 @@ class Game():
     def get_monster(self):
         pass
 
-#Update and move these functions as appropriate to interface with a visual UI
-# def statsokay(prio):
-#     charstats = characterbuilder.buildstatblock(prio)
-#     print("Your player stats are: " + str(charstats))
-#     answer = input("Would you like to reroll? (y/n)")
-#     while answer == "y":
-#         charstats = characterbuilder.buildstatblock(prio)
-#         print("Your player stats are: " + str(charstats))
-#         answer = input("Would you like to reroll? (y/n)")
-#     return charstats
-
+#Update and move this function as appropriate to interface with a visual UI
 def charcreator(charname, charclass, stats):
     if (charclass == 1):
         hdie = 10
