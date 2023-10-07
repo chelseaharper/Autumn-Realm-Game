@@ -10,11 +10,11 @@ class Creature:
         self.type = type
         self.stats = stats
         self.armor = armor
-        self.melee = self.getstatmod("str")
-        self.ranged = self.getstatmod("dex")
-        self.caster = self.getstatmod("int")
-        self.AC = 10 + (self.getstatmod("dex"))
-        self.touchAC = 10 + (self.getstatmod("dex"))
+        self.melee = self.getstatmod("STR")
+        self.ranged = self.getstatmod("DEX")
+        self.caster = self.getstatmod("INT")
+        self.AC = 10 + (self.getstatmod("DEX"))
+        self.touchAC = 10 + (self.getstatmod("DEX"))
         self.maxhealth = 0
         self.health = 0
         self.level = level
@@ -29,7 +29,7 @@ class Creature:
         self.setAC()
     
     def rollinit(self):
-        self.init = randint(1, 20) + self.getstatmod("dex")
+        self.init = randint(1, 20) + self.getstatmod("DEX")
     
     def changehealth (self, healthchange):
         if self.health + healthchange > self.maxhealth:
@@ -47,7 +47,7 @@ class Creature:
         self.touchAC = self.armor.setAC(self)
     
     def sethealth(self):
-        self.health = self.hitdie + ((randint(1, self.hitdie)) * (self.level - 1)) + self.getstatmod("con")
+        self.health = self.hitdie + ((randint(1, self.hitdie)) * (self.level - 1)) + self.getstatmod("CON")
         self.maxhealth = self.health
     
     def getAC(self, type):
@@ -95,9 +95,9 @@ class Player(Creature):
     
     def raiselevel(self):
         self.level += 1
-        self.stats["con"] += 0.25
+        self.stats["CON"] += 0.25
         self.stat_increase += 0.25
-        self.maxhealth += (randint(1, self.hitdie) + self.getstatmod("con"))
+        self.maxhealth += (randint(1, self.hitdie) + self.getstatmod("CON"))
         self.changehealth(getaverage(self.hitdie))
         self.setXPneeded()
         if self.stat_increase % 1 == 0:
@@ -130,7 +130,7 @@ class Monster(Creature):
         self.image = pygame.transform.scale(self.image, (config.SCALE, config.SCALE))
     
     def sethealth(self):
-        self.health = (getaverage(self.hitdie) + self.getstatmod("con")) * self.level
+        self.health = (getaverage(self.hitdie) + self.getstatmod("CON")) * self.level
 
 class NPC(Monster):
     def __init__(self, type, stats, hitdie, armor, level, weapon, XP, items, money, attitude, monster_image):
@@ -140,15 +140,15 @@ class NPC(Monster):
     
     def getDC(self):
         if self.attitude == "Hostile":
-            DC = 12 + self.getstatmod("cha")
+            DC = 12 + self.getstatmod("CHA")
         elif self.attitude == "Unfriendly":
-            DC = 10 + self.getstatmod("cha")
+            DC = 10 + self.getstatmod("CHA")
         elif self.attitude == "Indifferent":
-            DC = 7 + self.getstatmod("cha")
+            DC = 7 + self.getstatmod("CHA")
         elif self.attitude == "Friendly":
-            DC = 5 + self.getstatmod("cha")
+            DC = 5 + self.getstatmod("CHA")
         elif self.attitude == "Helpful":
-            DC = 0 + self.getstatmod("cha")
+            DC = 0 + self.getstatmod("CHA")
         return DC
     
     def getnextattitude(self, amount):
@@ -192,41 +192,41 @@ def rollstat():
 def buildstatblock(prio):
     statsokay = "n"
     while statsokay == "n":
-        statblock = {"str": rollstat(), "dex": rollstat(), "con": rollstat(), "int": rollstat(), "wis": rollstat(), "cha": rollstat()}
+        statblock = {"STR": rollstat(), "DEX": rollstat(), "CON": rollstat(), "INT": rollstat(), "WIS": rollstat(), "CHA": rollstat()}
         if prio == "melee":
-            if statblock["str"] < 12:
-                statblock = {"str": rollstat(), "dex": rollstat(), "con": rollstat(), "int": rollstat(), "wis": rollstat(), "cha": rollstat()}
-            elif statblock["con"] < 12:
-                statblock = {"str": rollstat(), "dex": rollstat(), "con": rollstat(), "int": rollstat(), "wis": rollstat(), "cha": rollstat()}
+            if statblock["STR"] < 12:
+                statblock = {"STR": rollstat(), "DEX": rollstat(), "CON": rollstat(), "INT": rollstat(), "WIS": rollstat(), "CHA": rollstat()}
+            elif statblock["CON"] < 12:
+                statblock = {"STR": rollstat(), "DEX": rollstat(), "CON": rollstat(), "INT": rollstat(), "WIS": rollstat(), "CHA": rollstat()}
             else:
                 statsokay = "y"
         elif prio == "ranged":
-            if statblock["dex"] < 12:
-                statblock = {"str": rollstat(), "dex": rollstat(), "con": rollstat(), "int": rollstat(), "wis": rollstat(), "cha": rollstat()}
-            elif statblock["con"] < 12:
-                statblock = {"str": rollstat(), "dex": rollstat(), "con": rollstat(), "int": rollstat(), "wis": rollstat(), "cha": rollstat()}
+            if statblock["DEX"] < 12:
+                statblock = {"STR": rollstat(), "DEX": rollstat(), "CON": rollstat(), "INT": rollstat(), "WIS": rollstat(), "CHA": rollstat()}
+            elif statblock["CON"] < 12:
+                statblock = {"STR": rollstat(), "DEX": rollstat(), "CON": rollstat(), "INT": rollstat(), "WIS": rollstat(), "CHA": rollstat()}
             else:
                 statsokay = "y"
         elif prio == "caster":
-            if statblock["int"] < 12:
-                statblock = {"str": rollstat(), "dex": rollstat(), "con": rollstat(), "int": rollstat(), "wis": rollstat(), "cha": rollstat()}
-            elif statblock["wis"] < 12:
-                statblock = {"str": rollstat(), "dex": rollstat(), "con": rollstat(), "int": rollstat(), "wis": rollstat(), "cha": rollstat()}
+            if statblock["INT"] < 12:
+                statblock = {"STR": rollstat(), "DEX": rollstat(), "CON": rollstat(), "INT": rollstat(), "WIS": rollstat(), "CHA": rollstat()}
+            elif statblock["WIS"] < 12:
+                statblock = {"STR": rollstat(), "DEX": rollstat(), "CON": rollstat(), "INT": rollstat(), "WIS": rollstat(), "CHA": rollstat()}
             else:
                 statsokay = "y"
         elif prio == "commoner":
-            if statblock["str"] > 14:
-                statblock = {"str": rollstat(), "dex": rollstat(), "con": rollstat(), "int": rollstat(), "wis": rollstat(), "cha": rollstat()}
-            elif statblock["dex"] > 14:
-                statblock = {"str": rollstat(), "dex": rollstat(), "con": rollstat(), "int": rollstat(), "wis": rollstat(), "cha": rollstat()}
-            elif statblock["con"] > 14:
-                statblock = {"str": rollstat(), "dex": rollstat(), "con": rollstat(), "int": rollstat(), "wis": rollstat(), "cha": rollstat()}
-            elif statblock["int"] > 14:
-                statblock = {"str": rollstat(), "dex": rollstat(), "con": rollstat(), "int": rollstat(), "wis": rollstat(), "cha": rollstat()}
-            elif statblock["wis"] > 14:
-                statblock = {"str": rollstat(), "dex": rollstat(), "con": rollstat(), "int": rollstat(), "wis": rollstat(), "cha": rollstat()}
-            elif statblock["cha"] > 14:
-                statblock = {"str": rollstat(), "dex": rollstat(), "con": rollstat(), "int": rollstat(), "wis": rollstat(), "cha": rollstat()}
+            if statblock["STR"] > 14:
+                statblock = {"STR": rollstat(), "DEX": rollstat(), "CON": rollstat(), "INT": rollstat(), "WIS": rollstat(), "CHA": rollstat()}
+            elif statblock["DEX"] > 14:
+                statblock = {"STR": rollstat(), "DEX": rollstat(), "CON": rollstat(), "INT": rollstat(), "WIS": rollstat(), "CHA": rollstat()}
+            elif statblock["CON"] > 14:
+                statblock = {"STR": rollstat(), "DEX": rollstat(), "CON": rollstat(), "INT": rollstat(), "WIS": rollstat(), "CHA": rollstat()}
+            elif statblock["INT"] > 14:
+                statblock = {"STR": rollstat(), "DEX": rollstat(), "CON": rollstat(), "INT": rollstat(), "WIS": rollstat(), "CHA": rollstat()}
+            elif statblock["WIS"] > 14:
+                statblock = {"STR": rollstat(), "DEX": rollstat(), "CON": rollstat(), "INT": rollstat(), "WIS": rollstat(), "CHA": rollstat()}
+            elif statblock["CHA"] > 14:
+                statblock = {"STR": rollstat(), "DEX": rollstat(), "CON": rollstat(), "INT": rollstat(), "WIS": rollstat(), "CHA": rollstat()}
             else:
                 statsokay = "y"
     return statblock

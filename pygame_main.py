@@ -5,12 +5,12 @@ import itemoptions
 from time import sleep
 import pygame
 import characterbuilder
-import game
+import old_game
 import config
 import utilities
 from utilities import game_state
 import map_functions
-import menus
+import old_menus
 
 #Initialize pygame, define screen, and create needed variables for while loop
 pygame.init()
@@ -29,7 +29,7 @@ player = ""
 
 map = map_functions.Map()
 map.load_map("map01")
-gameinstance = game.Game(screen, map)
+gameinstance = old_game.Game(screen, map)
 
 #Functions and variables for preparing a game either by creating a new game or loading a saved game
 def start_game():
@@ -51,30 +51,30 @@ while game_state != utilities.GameState.ENDED:
     clock.tick(50)
     #Allow players to choose whether or not to play. TODO: Add Load Game option
     if game_menu == True:
-        screen.blit(menus.startscreen_text, menus.startscreen_textRect)
+        screen.blit(old_menus.startscreen_text, old_menus.startscreen_textRect)
         for events in pygame.event.get():
-            if menus.start_button.draw(screen):
+            if old_menus.start_button.draw(screen):
                 game_menu = False
                 player_menu = True
-            elif menus.quit_button.draw(screen):
+            elif old_menus.quit_button.draw(screen):
                 utilities.end_game()
     #Allow players who choose a new game to select what clas they wish to play. POSSIBLE EXPANSION: Allow players to select image
     elif player_menu == True and class_selected == False:
         for events in pygame.event.get():
             screen.fill(config.black)
-            screen.blit(menus.charclass_text, menus.charclass_textRect)
+            screen.blit(old_menus.charclass_text, old_menus.charclass_textRect)
             if events.type == pygame.KEYDOWN:
                 if events.key == pygame.K_ESCAPE:
                     utilities.end_game()
-            elif menus.figher_button.draw(screen):
+            elif old_menus.figher_button.draw(screen):
                 charclass = [1, "melee"]
                 charstats = characterbuilder.buildstatblock(charclass[1])
                 class_selected = True
-            elif menus.archer_button.draw(screen):
+            elif old_menus.archer_button.draw(screen):
                 charclass = [2, "ranged"]
                 charstats = characterbuilder.buildstatblock(charclass[1])
                 class_selected = True
-            elif menus.wizard_button.draw(screen):
+            elif old_menus.wizard_button.draw(screen):
                 charclass = [3, "caster"]
                 charstats = characterbuilder.buildstatblock(charclass[1])
                 class_selected = True
@@ -82,26 +82,26 @@ while game_state != utilities.GameState.ENDED:
     elif player_menu == True and class_selected == True and stats_chosen == False:
         for events in pygame.event.get():
             screen.fill(config.black)
-            stat_display = menus.display_stats(charstats)
-            screen.blit(menus.stats_text, menus.stats_textRect)
+            stat_display = old_menus.display_stats(charstats)
+            screen.blit(old_menus.stats_text, old_menus.stats_textRect)
             for k in stat_display:
                 screen.blit(k, stat_display[k])
             if events.type == pygame.KEYDOWN:
                 if events.key == pygame.K_ESCAPE:
                     utilities.end_game()
-            elif menus.yes_button.draw(screen):
+            elif old_menus.yes_button.draw(screen):
                 reroll = 'n'
                 stats_chosen = True
-            elif menus.no_button.draw(screen):
+            elif old_menus.no_button.draw(screen):
                 reroll = 'y'
                 charstats = characterbuilder.buildstatblock(charclass[1])
     #Get character name from players in order to create their character and start the game     
     elif player_menu == True and class_selected == True and stats_chosen == True and player_named == False:
         screen.fill(config.black)
-        pygame.draw.rect(screen, config.white, menus.name_input_rect, 4)
-        screen.blit(menus.player_name_text, menus.player_name_textRect)
-        text_screen = menus.font.render(player, False, (255, 255, 255))
-        screen.blit(text_screen, (menus.name_input_rect.x +5, menus.name_input_rect.y +5))
+        pygame.draw.rect(screen, config.white, old_menus.name_input_rect, 4)
+        screen.blit(old_menus.player_name_text, old_menus.player_name_textRect)
+        text_screen = old_menus.font.render(player, False, (255, 255, 255))
+        screen.blit(text_screen, (old_menus.name_input_rect.x +5, old_menus.name_input_rect.y +5))
         for events in pygame.event.get():
             if events.type == pygame.QUIT:
                 utilities.end_game()

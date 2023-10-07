@@ -48,27 +48,27 @@ run_button = buttons.Button(325, 275, run_img)
 
 #Function for taking information gathered during introductory game set up and displaying the characters stats to the player for approval
 def display_stats(statblock):
-    str_text = font.render("Strength: " + str(statblock["str"]), True, config.white)
+    str_text = font.render("Strength: " + str(statblock["STR"]), True, config.white)
     str_textRect = str_text.get_rect()
     str_textRect.center = (150, 75)
     
-    dex_text = font.render("Dexterity: " + str(statblock["dex"]), True, config.white)
+    dex_text = font.render("Dexterity: " + str(statblock["DEX"]), True, config.white)
     dex_textRect = dex_text.get_rect()
     dex_textRect.center = (150, 150)
     
-    con_text = font.render("Constitution: " + str(statblock["con"]), True, config.white)
+    con_text = font.render("Constitution: " + str(statblock["CON"]), True, config.white)
     con_textRect = con_text.get_rect()
     con_textRect.center = (150, 225)
     
-    int_text = font.render("Intelligence: " + str(statblock["int"]), True, config.white)
+    int_text = font.render("Intelligence: " + str(statblock["INT"]), True, config.white)
     int_textRect = int_text.get_rect()
     int_textRect.center = (150, 300)
     
-    wis_text = font.render("Wisdom: " + str(statblock["wis"]), True, config.white)
+    wis_text = font.render("Wisdom: " + str(statblock["WIS"]), True, config.white)
     wis_textRect = wis_text.get_rect()
     wis_textRect.center = (150, 375)
     
-    cha_text = font.render("Charisma: " + str(statblock["cha"]), True, config.white)
+    cha_text = font.render("Charisma: " + str(statblock["CHA"]), True, config.white)
     cha_textRect = cha_text.get_rect()
     cha_textRect.center = (150, 450)
     return {str_text:str_textRect, dex_text:dex_textRect, con_text:con_textRect, int_text:int_textRect, wis_text:wis_textRect, cha_text:cha_textRect}

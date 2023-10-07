@@ -1,7 +1,7 @@
 import pygame
 import config
 import utilities
-import menus
+import old_menus
 import time
 from operator import itemgetter
 import characterbuilder
@@ -54,8 +54,8 @@ class Battle():
             self.monster_turn = False
             self.player_turn = True
         elif self.player_turn:
-            menus.attack_button.draw(self.screen)
-            menus.run_button.draw(self.screen)
+            old_menus.attack_button.draw(self.screen)
+            old_menus.run_button.draw(self.screen)
         if self.escape_failed > 0:
             failed_text = font.render("Unable to escape!", True, config.black)
             self.screen.blit(failed_text, (50, 150))
@@ -120,12 +120,12 @@ class Battle():
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     utilities.end_game()
-            elif self.player_turn and menus.attack_button.draw(self.screen):
+            elif self.player_turn and old_menus.attack_button.draw(self.screen):
                 self.attack(self.player, self.monster)
                 
-            elif menus.run_button.draw(self.screen):
-                escape = self.player.roll_check("dex")
-                block = self.monster.roll_check("dex")
+            elif old_menus.run_button.draw(self.screen):
+                escape = self.player.roll_check("DEX")
+                block = self.monster.roll_check("DEX")
                 if escape >= block:
                     self.escape_failed = 0
                     self.state = "ended"
