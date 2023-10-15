@@ -7,7 +7,7 @@ import pygame
 
 pygame.font.init()
 screen = pygame.display.set_mode((640, 480))
-pygame.display.set_caption("Menu Test")
+pygame.display.set_caption("Autumn's Realm")
 clock = pygame.time.Clock()
 
 

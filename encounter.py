@@ -1,10 +1,10 @@
 import pygame
 import config
 import utilities
-import old_menus
 import time
 from operator import itemgetter
 import characterbuilder
+import menu_creator
 
 class Battle():
     def __init__(self, screen, monster, player):
@@ -22,6 +22,7 @@ class Battle():
         self.monster_turn = False
         self.attack_result = 0
         self.order = []
+        self.battle_menu = menu_creator.Menu("Battle", 350, 250, ["Attack", "Run"], "button", 150, 50)
         self.set_up()
     
     def set_up(self):
@@ -54,8 +55,7 @@ class Battle():
             self.monster_turn = False
             self.player_turn = True
         elif self.player_turn:
-            old_menus.attack_button.draw(self.screen)
-            old_menus.run_button.draw(self.screen)
+            self.battle_menu.render_menu(self.screen)
         if self.escape_failed > 0:
             failed_text = font.render("Unable to escape!", True, config.black)
             self.screen.blit(failed_text, (50, 150))
@@ -120,14 +120,20 @@ class Battle():
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     utilities.end_game()
-            elif self.player_turn and old_menus.attack_button.draw(self.screen):
-                self.attack(self.player, self.monster)
+            elif self.player_turn:
+                for button in self.battle_menu.buttons:
+                    if button.handle_events():
+                        if button.name == "Attack":
+                            self.attack(self.player, self.monster)
+                        elif button.name == "Run":
+                            escape = self.player.roll_check("DEX")
+                            block = self.monster.roll_check("DEX")
+                            print(escape)
+                            print(block)
+                            if escape >= block:
+                                self.escape_failed = 0
+                                self.playerstate = "run"
+                                self.state = "ended"
+                            else:
+                                self.escape_failed = 50
                 
-            elif old_menus.run_button.draw(self.screen):
-                escape = self.player.roll_check("DEX")
-                block = self.monster.roll_check("DEX")
-                if escape >= block:
-                    self.escape_failed = 0
-                    self.state = "ended"
-                else:
-                    self.escape_failed = 50

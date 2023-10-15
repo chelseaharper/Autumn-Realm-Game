@@ -15,7 +15,6 @@ class PlayState(Enum):
 game_state = GameState.NONE
 
 def end_game():
-    game_state = GameState.ENDED
     exit()
 
 def save_game(data, name):
